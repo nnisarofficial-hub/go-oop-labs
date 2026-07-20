@@ -55,7 +55,6 @@ func NewElectricCar(make, model string, year int, battery float64) *ElectricCar 
 }
 
 func (e *ElectricCar) Charge(toLevel float64) error {
-	// error if toLevel > 1.0 or < current level
 	if toLevel > 1.0 {
 		return errors.New("requested charge level exceeds maximum capacity")
 	}
