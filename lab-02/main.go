@@ -5,8 +5,6 @@ import (
 	"math"
 )
 
-// func main() {}
-
 type Shape interface {
 	Area() float64
 	Perimeter() float64
@@ -18,11 +16,11 @@ type Circle struct {
 }
 
 func (c Circle) Area() float64 {
-	return math.Pi * math.Pow(c.Radius, 2) // Circle Radius Formula "A = pi x radius^2"
+	return math.Pi * math.Pow(c.Radius, 2)
 }
 
 func (c Circle) Perimeter() float64 {
-	return 2 * math.Pi * c.Radius //Perimeter (Circumference) Formula "C = 2 x pi x radius"
+	return 2 * math.Pi * c.Radius
 }
 
 func (c Circle) Name() string { return "Circle" }
@@ -32,11 +30,11 @@ type Rectangle struct {
 }
 
 func (r Rectangle) Area() float64 {
-	return r.Height * r.Width // Rectangle Formula "Area = height x width"
+	return r.Height * r.Width
 }
 
 func (r Rectangle) Perimeter() float64 {
-	return 2 * (r.Height + r.Width) //Perimeter (Circumference) Formula "Rectangle = 2 x (height x width"
+	return 2 * (r.Height + r.Width)
 }
 
 func (r Rectangle) Name() string { return "Rectangle" }
@@ -66,11 +64,9 @@ func main() {
 	circle := Circle{Radius: 10}
 	rectangle := Rectangle{Width: 15, Height: 20}
 	triangle := Triangle{A: 6, B: 5, C: 9}
-
 	PrintShapeInfo(circle)
 	PrintShapeInfo(rectangle)
 	PrintShapeInfo(triangle)
-
 	shapes := []Shape{circle, rectangle, triangle}
 	bigArea := LargestShape(shapes)
 	if bigArea != nil {
@@ -86,7 +82,6 @@ func LargestShape(shapes []Shape) Shape {
 	for _, shape := range shapes {
 		if shape.Area() > largest.Area() {
 			largest = shape
-			// fmt.Print(shape)
 		}
 	}
 	return largest
