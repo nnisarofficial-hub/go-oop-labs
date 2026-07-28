@@ -47,7 +47,7 @@ func NewFileLogger(filename string) (*FileLogger, error) {
 
 func (l *FileLogger) Info(msg string) {
 	timestamp := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Printf("[INFO]  %s [orders] %s\n", timestamp, msg)
+	fmt.Fprintf(l.file, "[INFO]  %s [orders] %s\n", timestamp, msg)
 }
 func (l *FileLogger) Warn(msg string) {
 	timestamp := time.Now().Format("2006/01/02 15:04:05")
@@ -63,18 +63,9 @@ func (l *FileLogger) Close() {
 
 type NoopLogger struct{}
 
-func (l *NoopLogger) Info(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Printf("[INFO]  %s [orders] %s\n", timestamp, msg)
-}
-func (l *NoopLogger) Warn(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Printf("[WARN]  %s [orders] %s\n", timestamp, msg)
-}
-func (l *NoopLogger) Error(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
-	fmt.Printf("[ERROR]  %s [orders] %s\n", timestamp, msg)
-}
+func (l *NoopLogger) Info(msg string)  {}
+func (l *NoopLogger) Warn(msg string)  {}
+func (l *NoopLogger) Error(msg string) {}
 
 type OrderService struct {
 	logger Logger
