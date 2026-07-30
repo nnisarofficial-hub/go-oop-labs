@@ -94,7 +94,7 @@ func ArchiveDocument(rwd ReadWriteDeleter, id, archiveID string) {
 		fmt.Println(err)
 		return
 	}
-	err = rwd.Delete(archiveID)
+	err = rwd.Delete(id)
 	if err != nil {
 		fmt.Println(err)
 		return
