@@ -60,14 +60,12 @@ func main() {
 	}
 	fmt.Println(color)
 	fmt.Printf("Hex:   %s\n", color.Hex())
-
 	temp := Temperature{
 		Celsius: 38.5,
 	}
 	fmt.Println()
 	fmt.Printf("Temperature: %s\n", temp.String())
 	fmt.Printf("Is fever: %t\n", temp.IsFever())
-
 	m1 := Money{Amount: 1250.00, Currency: "PKR"}
 	m2 := Money{Amount: 1250.00, Currency: "PKR"}
 	m3 := Money{Amount: 10.00, Currency: "USD"}
