@@ -11,7 +11,7 @@ type ValidationError struct {
 }
 
 func (e *ValidationError) Error() string {
-	return fmt.Sprintf("Error: validation error on field '%s': %s", e.Field, e.Message)
+	return fmt.Sprintf("validation error on field '%s': %s", e.Field, e.Message)
 }
 
 type DuplicateError struct {
@@ -20,7 +20,7 @@ type DuplicateError struct {
 }
 
 func (e *DuplicateError) Error() string {
-	return fmt.Sprintf("Error: duplicate '%s': '%s' already exists", e.Resource, e.Value)
+	return fmt.Sprintf("duplicate '%s': '%s' already exists", e.Resource, e.Value)
 }
 
 type NotFoundError struct {
@@ -29,7 +29,7 @@ type NotFoundError struct {
 }
 
 func (e *NotFoundError) Error() string {
-	return fmt.Sprintf("Error: user with id '%s' not found", e.ID)
+	return fmt.Sprintf("%s with id '%s' not found", e.Resource, e.ID)
 }
 
 type User struct {
@@ -53,25 +53,22 @@ func NewUserStore() *UserStore {
 
 func (s *UserStore) Register(username, email string, age int) (*User, error) {
 	if len(username) < 3 {
-		validation := ValidationError{
+		return nil, &ValidationError{
 			Field:   "username",
 			Message: "must be at least 3 characters",
 		}
-		fmt.Println(validation.Error())
 	}
 	if !strings.Contains(email, "@") {
-		validation := ValidationError{
+		return nil, &ValidationError{
 			Field:   "email",
 			Message: "invalid format",
 		}
-		fmt.Println(validation.Error())
 	}
 	if age < 18 {
-		validation := ValidationError{
+		return nil, &ValidationError{
 			Field:   "age",
 			Message: "must be 18 or older",
 		}
-		fmt.Println(validation.Error())
 	}
 	for _, existingUser := range s.users {
 		if existingUser.Username == username {
@@ -103,41 +100,28 @@ func (s *UserStore) FindByID(id int) (*User, error) {
 	return user, nil
 }
 
+func printRegisterResult(store *UserStore, username, email string, age int) {
+	fmt.Printf(`Register("%s", "%s", %d):`, username, email, age)
+	user, err := store.Register(username, email, age)
+	if err != nil {
+		fmt.Printf("\n  Error: %v\n\n", err)
+		return
+	}
+	fmt.Printf(" ✓ User created (ID: %d)\n", user.ID)
+}
+
 func main() {
 	store := NewUserStore()
-	fmt.Println(`Register("al", "ali@email.com", 25):`)
-	_, err := store.Register("al", "ali@email.com", 25)
+
+	printRegisterResult(store, "al", "ali@email.com", 25)
+	printRegisterResult(store, "ali", "not-an-email", 25)
+	printRegisterResult(store, "ali", "ali@email.com", 15)
+	printRegisterResult(store, "ali", "ali@email.com", 25)
+	printRegisterResult(store, "ali", "ali2@email.com", 30)
+
+	fmt.Printf(`FindByID(999):`)
+	_, err := store.FindByID(999)
 	if err != nil {
-		fmt.Println("  ", err)
-	}
-	fmt.Println()
-	fmt.Println(`Register("ali", "not-an-email", 25):`)
-	_, err = store.Register("ali", "not-an-email", 25)
-	if err != nil {
-		fmt.Println("  ", err)
-	}
-	fmt.Println()
-	fmt.Println(`Register("ali", "ali@email.com", 15):`)
-	_, err = store.Register("ali", "ali@email.com", 15)
-	if err != nil {
-		fmt.Println("  ", err)
-	}
-	fmt.Println()
-	fmt.Println(`Register("ali", "ali@email.com", 25):`)
-	user, err := store.Register("ali", "ali@email.com", 25)
-	if err == nil {
-		fmt.Printf("   ✓ User created (ID: %d)\n", user.ID)
-	}
-	fmt.Println()
-	fmt.Println(`Register("ali", "ali2@email.com", 30):`)
-	_, err = store.Register("ali", "ali2@email.com", 30)
-	if err != nil {
-		fmt.Println("  ", err)
-	}
-	fmt.Println()
-	fmt.Println(`FindByID(999):`)
-	_, err = store.FindByID(999)
-	if err != nil {
-		fmt.Println("  ", err)
+		fmt.Printf("\n  Error: %v\n", err)
 	}
 }
