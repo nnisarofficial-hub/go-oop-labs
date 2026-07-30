@@ -9,8 +9,8 @@ type Vehicle struct {
 	Make         string
 	Model        string
 	Year         int
-	Mileage      float64
-	FuelCapacity float64
+	Mileage      float64 // km
+	FuelCapacity float64 // liters
 }
 
 func (v Vehicle) Info() string {
@@ -23,12 +23,20 @@ func (v *Vehicle) Drive(km float64) {
 
 type Truck struct {
 	Vehicle
-	PayloadCapacity float64
+	PayloadCapacity float64 // tonnes
 	CurrentLoad     float64
 }
 
 func NewTruck(make, model string, year int, payload float64) *Truck {
-	return &Truck{}
+	return &Truck{
+		Vehicle: Vehicle{
+			Make:  make,
+			Model: model,
+			Year:  year,
+		},
+		PayloadCapacity: payload,
+		CurrentLoad:     0.0,
+	}
 }
 
 func (t *Truck) LoadCargo(tonnes float64) error {
@@ -41,17 +49,25 @@ func (t *Truck) LoadCargo(tonnes float64) error {
 }
 
 func (t *Truck) Info() string {
-	return fmt.Sprintf("%d %s %s (%.0f km) | Load: %.1f/%.1ft", t.Year, t.Make, t.Model, t.Mileage, t.CurrentLoad, t.PayloadCapacity)
+	return fmt.Sprintf("%s | Load: %.1f/%.1ft", t.Vehicle.Info(), t.CurrentLoad, t.PayloadCapacity)
 }
 
 type ElectricCar struct {
 	Vehicle
-	BatteryCapacity float64
-	ChargeLevel     float64
+	BatteryCapacity float64 // kwh
+	ChargeLevel     float64 // 0.0 to 1.0 (percentage as decimal)
 }
 
 func NewElectricCar(make, model string, year int, battery float64) *ElectricCar {
-	return &ElectricCar{}
+	return &ElectricCar{
+		Vehicle: Vehicle{
+			Make:  make,
+			Model: model,
+			Year:  year,
+		},
+		BatteryCapacity: battery,
+		ChargeLevel:     0.0,
+	}
 }
 
 func (e *ElectricCar) Charge(toLevel float64) error {
@@ -61,6 +77,7 @@ func (e *ElectricCar) Charge(toLevel float64) error {
 	if toLevel < e.ChargeLevel {
 		return errors.New("requested charge level is below current charge level")
 	}
+	e.ChargeLevel = toLevel
 	return nil
 }
 
@@ -69,7 +86,7 @@ func (e *ElectricCar) RangeRemaining() float64 {
 }
 
 func (e *ElectricCar) Info() string {
-	return fmt.Sprintf("%d %s %s (%.0f km) | Battery: %.0f | Range: ~%.0f km", e.Year, e.Make, e.Model, e.Mileage, e.ChargeLevel, e.RangeRemaining())
+	return fmt.Sprintf("%s | Battery: %.0f | Range: ~%.0f km", e.Vehicle.Info(), e.ChargeLevel, e.RangeRemaining())
 }
 
 func main() {
