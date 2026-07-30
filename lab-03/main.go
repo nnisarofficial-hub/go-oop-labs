@@ -23,8 +23,8 @@ type Manager struct {
 }
 
 func (m Manager) Describe() string {
-	// baseDescription := m.Employee.Describe()
-	return fmt.Sprintf("Manager #%d: %s (%s) — PKR %.0f/month — manages %d reports", m.ID, m.Name, m.Department, m.Salary, len(m.Reports))
+	baseDescription := m.Employee.Describe()
+	return fmt.Sprintf("%s [Manages %d direct reports]", baseDescription, len(m.Reports))
 }
 
 func (m *Manager) AddReport(e *Employee) {
