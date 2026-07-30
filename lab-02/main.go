@@ -4,6 +4,19 @@ import (
 	"fmt"
 	"math"
 )
+func main() {
+	circle := Circle{Radius: 10}
+	rectangle := Rectangle{Width: 15, Height: 20}
+	triangle := Triangle{A: 6, B: 5, C: 9}
+	PrintShapeInfo(circle)
+	PrintShapeInfo(rectangle)
+	PrintShapeInfo(triangle)
+	shapes := []Shape{circle, rectangle, triangle}
+	bigArea := LargestShape(shapes)
+	if bigArea != nil {
+		fmt.Printf("\nLargest shape by area: %s (%.2f)\n", bigArea.Name(), bigArea.Area())
+	}
+}
 
 type Shape interface {
 	Area() float64
@@ -58,20 +71,6 @@ func PrintShapeInfo(s Shape) {
 	fmt.Printf("%s\n", s.Name())
 	fmt.Printf("  %-12s%5.2f\n", "Area:", s.Area())
 	fmt.Printf("  %-12s%5.2f\n", "Perimeter:", s.Perimeter())
-}
-
-func main() {
-	circle := Circle{Radius: 10}
-	rectangle := Rectangle{Width: 15, Height: 20}
-	triangle := Triangle{A: 6, B: 5, C: 9}
-	PrintShapeInfo(circle)
-	PrintShapeInfo(rectangle)
-	PrintShapeInfo(triangle)
-	shapes := []Shape{circle, rectangle, triangle}
-	bigArea := LargestShape(shapes)
-	if bigArea != nil {
-		fmt.Printf("\nLargest shape by area: %s (%.2f)\n", bigArea.Name(), bigArea.Area())
-	}
 }
 
 func LargestShape(shapes []Shape) Shape {
