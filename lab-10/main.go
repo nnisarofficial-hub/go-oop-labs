@@ -6,6 +6,10 @@ import (
 	"time"
 )
 
+const (
+	format = "2006/01/02 15:04:05"
+)
+
 type Logger interface {
 	Info(msg string)
 	Warn(msg string)
@@ -20,15 +24,15 @@ func NewConsoleLogger(prefix string) *ConsoleLogger {
 	return &ConsoleLogger{prefix: prefix}
 }
 func (l *ConsoleLogger) Info(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Printf("[INFO]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 func (l *ConsoleLogger) Warn(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Printf("[WARN]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 func (l *ConsoleLogger) Error(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Printf("[ERROR]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 
@@ -46,15 +50,15 @@ func NewFileLogger(filename string) (*FileLogger, error) {
 }
 
 func (l *FileLogger) Info(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Fprintf(l.file, "[INFO]  %s [orders] %s\n", timestamp, msg)
 }
 func (l *FileLogger) Warn(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Printf("[WARN]  %s [orders] %s\n", timestamp, msg)
 }
 func (l *FileLogger) Error(msg string) {
-	timestamp := time.Now().Format("2006/01/02 15:04:05")
+	timestamp := time.Now().Format(format)
 	fmt.Printf("[ERROR]  %s [orders] %s\n", timestamp, msg)
 }
 func (l *FileLogger) Close() {
