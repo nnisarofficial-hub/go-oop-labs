@@ -37,29 +37,30 @@ func (l *ConsoleLogger) Error(msg string) {
 }
 
 type FileLogger struct {
+	ConsoleLogger
 	filename string
 	file     *os.File
 }
 
-func NewFileLogger(filename string) (*FileLogger, error) {
+func NewFileLogger(filename, prefix string) (*FileLogger, error) {
 	f, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
-	return &FileLogger{filename: filename, file: f}, nil
+	return &FileLogger{ConsoleLogger: ConsoleLogger{prefix: prefix}, filename: filename, file: f}, nil
 }
 
 func (l *FileLogger) Info(msg string) {
 	timestamp := time.Now().Format(format)
-	fmt.Fprintf(l.file, "[INFO]  %s [orders] %s\n", timestamp, msg)
+	fmt.Fprintf(l.file, "[INFO]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 func (l *FileLogger) Warn(msg string) {
 	timestamp := time.Now().Format(format)
-	fmt.Printf("[WARN]  %s [orders] %s\n", timestamp, msg)
+	fmt.Printf("[WARN]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 func (l *FileLogger) Error(msg string) {
 	timestamp := time.Now().Format(format)
-	fmt.Printf("[ERROR]  %s [orders] %s\n", timestamp, msg)
+	fmt.Printf("[ERROR]  %s [%s] %s\n", timestamp, l.prefix, msg)
 }
 func (l *FileLogger) Close() {
 	l.file.Close()
@@ -100,6 +101,15 @@ func main() {
 	svc := NewOrderService(NewConsoleLogger("orders"))
 	svc.PlaceOrder(1, "Barbari Buck — Premium Grade")
 	svc.CancelOrder(999)
+	fileLogger, err := NewFileLogger("orders.log", "orders")
+	if err != nil {
+		fmt.Println("failed to create file logger:", err)
+		return
+	}
+	defer fileLogger.Close()
+	fileSvc := NewOrderService(fileLogger)
+	fileSvc.PlaceOrder(3, "file logged item")
+
 	testSvc := NewOrderService(&NoopLogger{})
 	testSvc.PlaceOrder(2, "test item")
 }
