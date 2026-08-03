@@ -9,7 +9,7 @@ type Color struct {
 }
 
 func (c Color) String() string {
-	return fmt.Sprintf("Color: rgb(%d, %d, %d)", c.R, c.G, c.B)
+	return fmt.Sprintf("rgb(%d, %d, %d)", c.R, c.G, c.B)
 }
 
 func (c Color) Hex() string {
@@ -58,7 +58,7 @@ func main() {
 		G: 128,
 		B: 0,
 	}
-	fmt.Println(color)
+	fmt.Printf("Color: %s\n", color.String())
 	fmt.Printf("Hex:   %s\n", color.Hex())
 	temp := Temperature{
 		Celsius: 38.5,
