@@ -71,6 +71,9 @@ func main() {
 	m3 := Money{Amount: 10.00, Currency: "USD"}
 	fmt.Printf("\nPrice: %s\n", m1)
 	total, err := m1.Add(m2)
+	if err != nil {
+		fmt.Printf("Error: %s\n", err)
+	}
 	fmt.Printf("Total: %s\n\n", total)
 	_, err = m1.Add(m3)
 	if err != nil {
