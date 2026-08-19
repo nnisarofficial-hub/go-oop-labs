@@ -72,7 +72,7 @@ func (c *CreditCard) Charge(amount float64, reference string) (*PaymentResult, e
 	if amount <= 0 {
 		return nil, errors.New("charge amount must be greater than zero")
 	}
-	if amount > 100000 {
+	if amount > limit {
 		return nil, fmt.Errorf("amount %.f exceeds limit of %.f", amount, limit)
 	}
 	return &PaymentResult{
