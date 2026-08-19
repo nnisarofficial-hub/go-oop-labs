@@ -46,7 +46,7 @@ func capitalize(s string) string {
 }
 
 type CreditCard struct {
-	CardNumber string
+	CardNumber string // last 4 digits only for display
 	HolderName string
 }
 
