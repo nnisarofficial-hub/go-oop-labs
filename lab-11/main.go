@@ -72,7 +72,7 @@ func (c *CreditCard) Charge(amount float64, reference string) (*PaymentResult, e
 	if amount <= 0 {
 		return nil, errors.New("charge amount must be greater than zero")
 	}
-	if amount > limit {
+	if amount > 100000 {
 		return nil, fmt.Errorf("amount %.f exceeds limit of %.f", amount, limit)
 	}
 	return &PaymentResult{
@@ -100,11 +100,10 @@ func (j *JazzCash) Name() string {
 func (j *JazzCash) Type() string { return "JazzCash" }
 
 func (j *JazzCash) Charge(amount float64, reference string) (*PaymentResult, error) {
-	limit := 25000.0
 	if amount <= 0 {
 		return nil, errors.New("charge amount must be greater than zero")
 	}
-	if amount > limit {
+	if amount > 25000 {
 		return nil, fmt.Errorf("amount %.f exceeds wallet limit of 25000", amount)
 	}
 	return &PaymentResult{
