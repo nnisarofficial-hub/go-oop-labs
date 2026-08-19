@@ -68,7 +68,7 @@ func (c *CreditCard) Name() string {
 func (c *CreditCard) Type() string { return "CreditCard" }
 
 func (c *CreditCard) Charge(amount float64, reference string) (*PaymentResult, error) {
-	limit := 100000.0
+	const limit = 100000.0
 	if amount <= 0 {
 		return nil, errors.New("charge amount must be greater than zero")
 	}
