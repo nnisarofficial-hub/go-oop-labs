@@ -11,7 +11,7 @@ func NewInMemoryProductRepo() *InMemoryProductRepo {
 }
 func (r *InMemoryProductRepo) FindByID(id string) (*Product, error) {
 	if id == "" {
-		return nil, errors.New("id cannt be empty")
+		return nil, errors.New("id cannot be empty")
 	}
 	product := r.products[id]
 	return product, nil
