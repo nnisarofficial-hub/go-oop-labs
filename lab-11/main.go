@@ -28,11 +28,10 @@ type Logger interface {
 }
 
 type ConsoleLogger struct {
-	prefix string
 }
 
-func NewConsoleLogger(prefix string) *ConsoleLogger {
-	return &ConsoleLogger{prefix: prefix}
+func NewConsoleLogger() *ConsoleLogger {
+	return &ConsoleLogger{}
 }
 func (l *ConsoleLogger) Info(msg string)  { fmt.Println(capitalize(msg)) }
 func (l *ConsoleLogger) Warn(msg string)  { fmt.Println("WARN: " + capitalize(msg)) }
