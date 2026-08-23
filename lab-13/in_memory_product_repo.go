@@ -17,7 +17,7 @@ func (r *InMemoryProductRepo) FindByID(id string) (*Product, error) {
 	return product, nil
 }
 func (r *InMemoryProductRepo) FindAll() ([]*Product, error) {
-	var allProducts []*Product
+	allProducts := make([]*Product, 0, len(r.products))
 	for _, product := range r.products {
 		allProducts = append(allProducts, product)
 	}
@@ -46,5 +46,12 @@ func (r *InMemoryProductRepo) Save(p *Product) error {
 	return nil
 }
 func (r *InMemoryProductRepo) Delete(id string) error {
+	if id == "" {
+		return errors.New("product id cannot be empty")
+	}
+	if _, exists := r.products[id]; !exists {
+		return errors.New("product not found")
+	}
+	delete(r.products, id)
 	return nil
 }

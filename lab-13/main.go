@@ -24,6 +24,15 @@ type Logger interface {
 	Error(msg string)
 }
 
+func printCatalog(products []*Product) {
+	fmt.Printf("Catalog (%d products):\n", len(products))
+
+	for _, p := range products {
+		fmt.Printf("  [%-11s] %-15s — PKR %8.0f | Stock: %d\n",
+			p.Category, p.Name, p.Price, p.Stock)
+	}
+}
+
 func main() {
 	repo := NewInMemoryProductRepo()
 	logger := &ConsoleLogger{}
